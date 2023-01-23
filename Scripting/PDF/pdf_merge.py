@@ -1,3 +1,7 @@
+"""
+Program to merge multiple pdf files into one.
+"""
+
 import sys
 import PyPDF2
 
