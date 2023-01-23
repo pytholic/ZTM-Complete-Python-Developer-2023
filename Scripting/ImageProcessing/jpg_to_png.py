@@ -1,3 +1,7 @@
+"""
+Program to convert .jpg images to .png format.
+"""
+
 import sys
 import os
 from PIL import Image
