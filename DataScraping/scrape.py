@@ -14,12 +14,20 @@ from bs4 import BeautifulSoup
 import pprint
 
 # Grab the data
-response = requests.get("https://news.ycombinator.com/news")
+response = requests.get("https://news.ycombinator.com/news")  # p1
+response2 = requests.get("https://news.ycombinator.com/news?p=2")  # p2
 
 # Remove the data that we don't need
 soup = BeautifulSoup(response.text, "html.parser")
+soup2 = BeautifulSoup(response.text, "html.parser")
+
 links = soup.select(".titleline > a")
 subtext = soup.select(".subtext")  # votes are inside this subtext
+links2 = soup.select(".titleline > a")
+subtext2 = soup.select(".subtext")
+
+merged_links = links + links2
+merged_subtexts = subtext + subtext2
 
 # Sanity checks
 # vote = subtext[0].select(".score")
@@ -27,6 +35,10 @@ subtext = soup.select(".subtext")  # votes are inside this subtext
 # votes = soup.select(".score")
 # print(votes[0].getText())
 # print(votes[0].get("id"))
+
+
+def sort_by_votes(hnlist):
+    return sorted(hnlist, key=lambda k: k["votes"], reverse=True)
 
 
 def create_custom_hackernews(links, subtext):
@@ -41,7 +53,7 @@ def create_custom_hackernews(links, subtext):
             )  # only grabbing plain text -> points field
             if points > 99:
                 hn.append({"title": title, "link": href, "votes": points})
-    return hn
+    return sort_by_votes(hn)
 
 
-pprint.pprint(create_custom_hackernews(links, subtext))
+pprint.pprint(create_custom_hackernews(merged_links, merged_subtexts))
