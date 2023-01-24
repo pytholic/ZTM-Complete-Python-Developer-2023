@@ -13,28 +13,24 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 
-# Grab the data
-response = requests.get("https://news.ycombinator.com/news")  # p1
-response2 = requests.get("https://news.ycombinator.com/news?p=2")  # p2
 
-# Remove the data that we don't need
-soup = BeautifulSoup(response.text, "html.parser")
-soup2 = BeautifulSoup(response.text, "html.parser")
+# Function to grab data
+def get_links_subtexts(url, num_pages):
+    all_links = []
+    all_subtexts = []
 
-links = soup.select(".titleline > a")
-subtext = soup.select(".subtext")  # votes are inside this subtext
-links2 = soup.select(".titleline > a")
-subtext2 = soup.select(".subtext")
+    for i in range(num_pages):
+        if i == 0:
+            response = requests.get(f"{url}")
+        else:
+            response = requests.get(f"{url}?p={i+1}")
+        soup = BeautifulSoup(response.text, "html.parser")
+        links = soup.select(".titleline > a")
+        subtext = soup.select(".subtext")
+        all_links += links
+        all_subtexts += subtext
 
-merged_links = links + links2
-merged_subtexts = subtext + subtext2
-
-# Sanity checks
-# vote = subtext[0].select(".score")
-# print(vote[0])
-# votes = soup.select(".score")
-# print(votes[0].getText())
-# print(votes[0].get("id"))
+    return all_links, all_subtexts
 
 
 def sort_by_votes(hnlist):
@@ -56,4 +52,7 @@ def create_custom_hackernews(links, subtext):
     return sort_by_votes(hn)
 
 
-pprint.pprint(create_custom_hackernews(merged_links, merged_subtexts))
+links, subtexts = get_links_subtexts(
+    url="https://news.ycombinator.com/news", num_pages=3
+)
+pprint.pprint(create_custom_hackernews(links, subtexts))
