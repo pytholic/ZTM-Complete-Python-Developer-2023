@@ -1,4 +1,3 @@
 *.pyc
 .DS_Store
-Scripting/SMS/config.yaml
-Scripting/TwitterBot/config.yaml
+*.yaml
