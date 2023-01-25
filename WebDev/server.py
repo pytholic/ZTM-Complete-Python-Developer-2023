@@ -12,17 +12,3 @@ def hello_world(username=None, post_id=None):
 @app.route("/about.html")
 def about():
     return render_template("about.html")
-
-
-# @app.route("/favicon.ico")
-# def favicon():
-#     return send_from_directory(
-#         os.path.join(app.root_path, "static"),
-#         "favicon.ico",
-#         mimetype="vnd.microsoft.icon",
-#     )
-
-
-# @app.route("/favicon.ico")
-# def blog2():
-#     return "<p>This is my dog</p>"
