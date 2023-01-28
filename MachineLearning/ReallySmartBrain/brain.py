@@ -14,3 +14,6 @@ predictions, probabilities = prediction.classifyImage(
 )
 for eachPrediction, eachProbability in zip(predictions, probabilities):
     print(eachPrediction, " : ", eachProbability)
+
+hyerim = 
+PI = 3.14
